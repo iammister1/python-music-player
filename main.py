@@ -18,6 +18,9 @@ paused = False
 def updateText():
     texlen = 20
 
+    print(songs_completed)
+
+
     if len(current_song) > 35:
         texlen = 10
 
@@ -65,11 +68,15 @@ def getnewSong():
         if len(songs) <= 1:
             return
 
+        if len(songs_completed) >= len(songs):
+            songs_completed.clear()
+
         while True:
             random_song = random.choice(songs)
 
-            if random_song != current_song:
+            if random_song != current_song and random_song not in songs_completed:
                 current_song = random_song
+                songs_completed.append(random_song)
                 updateText()
                 return
 
@@ -92,7 +99,9 @@ def playSong():
 
 
 def turnonShuffle():
-    global shuffle
+    global shuffle, songs_completed
+
+    songs_completed = []
 
     if not shuffle:
         shuffle = True
