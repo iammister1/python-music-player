@@ -14,6 +14,9 @@ songs_completed = []
 shuffle = False
 paused = False
 
+def removeUnpathSelected():
+    no_path_selected.forget()
+
 
 def updateText():
     texlen = 20
@@ -82,20 +85,25 @@ def getnewSong():
 
 
 def playSong():
-    global paused
-
-    if current_song == "":
-        getnewSong()
+    global paused, no_path_selected
+    if path == "":
+        print("no path selected")
+        no_path_selected.pack()
+        app.after(1000, removeUnpathSelected)
         return
-
-    if not paused:
-        paused = True
-        pygame.mixer.music.pause()
-        play_button.config(text="Play")
     else:
-        paused = False
-        pygame.mixer.music.unpause()
-        play_button.config(text="Pause")
+        if current_song == "":
+            getnewSong()
+            return
+
+        if not paused:
+            paused = True
+            pygame.mixer.music.pause()
+            play_button.config(text="Play")
+        else:
+            paused = False
+            pygame.mixer.music.unpause()
+            play_button.config(text="Pause")
 
 
 def turnonShuffle():
@@ -152,6 +160,13 @@ choose_path = tkinter.Button(
     command=change_path
 )
 choose_path.pack(padx=10, pady=10)
+
+no_path_selected = tkinter.Button(
+    app,
+    text="No path selected",
+    font=("Arial", 18),
+    fg="Red"
+)
 
 currently_playing = tkinter.Label(
     app,
