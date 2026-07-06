@@ -139,12 +139,19 @@ def change_path():
     global path
     path = filedialog.askdirectory(title="Select folder")
     print(path)
+    with open("data.txt", "w") as f:
+        f.write(path)
     
 
 
 app = tkinter.Tk()
 app.title("music player")
 app.geometry("600x800")
+
+# Remember path
+with open("data.txt") as f:
+    path = f.read()
+
 
 tt = tkinter.Label(
     app,
